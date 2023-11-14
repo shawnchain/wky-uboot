@@ -175,8 +175,8 @@
 //                             Environment variables
 // =============================================================================
 #define CONFIG_PREBOOT				"run prepare_video; run check_usbburn; print 'Waiting for autoboot...'"
-#define CONFIG_BOOTDELAY			3
-#define CONFIG_BOOTCOMMAND			"print 'Autobooting...'; run boot_usb_armbian; run boot_sdcard_armbian; run boot_emmc_armbian; print 'Failed to boot'; "
+#define CONFIG_BOOTDELAY			2
+#define CONFIG_BOOTCOMMAND			"print 'Autobooting...'; run boot_usb_os; run boot_sdcard_os; run boot_emmc_os; print 'Failed to boot'; "
 #define CONFIG_HOSTNAME				"onecloud"
 #define CONFIG_ETHADDR				00:15:18:01:81:31
 #define CONFIG_IPADDR				192.168.1.150
@@ -229,24 +229,25 @@
 		"\0" \
 	\
 	"loadaddr=0x12000000\0" \
-	"boot_emmc_armbian=" \
+	"bootscr=boot.scr\0" \
+	"boot_emmc_os=" \
 		"print -n 'Try to boot from eMMC...'; " \
 		"mmc rescan 1; " \
 		"setenv bootdev 'mmc 1'; " \
-		"fatload ${bootdev} ${loadaddr} boot.scr && autoscr ${loadaddr}; " \
+		"fatload ${bootdev} ${loadaddr} ${bootscr} && autoscr ${loadaddr}; " \
 		"print 'Fail'; " \
 		"\0" \
-	"boot_sdcard_armbian=" \
+	"boot_sdcard_os=" \
 		"print -n 'Try to boot from SDCard...'; " \
 		"mmc rescan 0; " \
 		"setenv bootdev 'mmc 0'; " \
-		"fatload ${bootdev} ${loadaddr} boot.scr && autoscr ${loadaddr}; " \
+		"fatload ${bootdev} ${loadaddr} ${bootscr} && autoscr ${loadaddr}; " \
 		"print 'Fail'; " \
 		"\0" \
-	"boot_usb_armbian=" \
+	"boot_usb_os=" \
 		"print -n 'Try to boot from USB...'; " \
 		"setenv bootdev 'usb 0'; " \
-		"usb start && fatload ${bootdev} ${loadaddr} boot.scr && autoscr ${loadaddr}; " \
+		"usb start && fatload ${bootdev} ${loadaddr} ${bootscr} && autoscr ${loadaddr}; " \
 		"print 'Fail'; " \
 		"\0" \
 	""
