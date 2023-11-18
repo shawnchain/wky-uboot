@@ -249,6 +249,7 @@
 		"setenv bootdev 'usb 0'; " \
 		"usb start && fatload ${bootdev} ${loadaddr} ${bootscr} && autoscr ${loadaddr}; " \
 		"print 'Fail'; " \
+		"usb stop;" \
 		"\0" \
 	""
 // =============================================================================
